@@ -1,0 +1,169 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/1/Mux4Way16.hdl
+/**
+ * 4-way 16-bit multiplexor:
+ * out = a if sel = 00
+ *       b if sel = 01
+ *       c if sel = 10
+ *       d if sel = 11
+ */
+CHIP Mux4Way16 {
+    IN a[16], b[16], c[16], d[16], sel[2];
+    OUT out[16];
+    
+    PARTS:
+    Not(in=sel[0], out=notSel0);
+    Not(in=sel[1], out=notSel1);
+
+  And16(a=a, b[0]=notSel0, 
+b[1]=notSel0, 
+b[2]=notSel0,
+b[3]=notSel0,
+b[4]=notSel0,
+b[5]=notSel0,
+b[6]=notSel0,
+b[7]=notSel0,
+b[8]=notSel0,
+b[9]=notSel0,
+b[10]=notSel0,
+b[11]=notSel0,
+b[12]=notSel0,
+b[13]=notSel0,
+b[14]=notSel0,
+b[15]=notSel0,
+out=aAndNotSel0);
+
+And16(a=aAndNotSel0, b[0]=notSel1, 
+b[1]=notSel1, 
+b[2]=notSel1,
+b[3]=notSel1,
+b[4]=notSel1,
+b[5]=notSel1,
+b[6]=notSel1,
+b[7]=notSel1,
+b[8]=notSel1,
+b[9]=notSel1,
+b[10]=notSel1,
+b[11]=notSel1,
+b[12]=notSel1,
+b[13]=notSel1,
+b[14]=notSel1,
+b[15]=notSel1,
+out=aAndNotSel0AndNotSel1);
+
+
+And16(a=b, b[0]=sel[0], 
+b[1]=sel[0], 
+b[2]=sel[0],
+b[3]=sel[0],
+b[4]=sel[0],
+b[5]=sel[0],
+b[6]=sel[0],
+b[7]=sel[0],
+b[8]=sel[0],
+b[9]=sel[0],
+b[10]=sel[0],
+b[11]=sel[0],
+b[12]=sel[0],
+b[13]=sel[0],
+b[14]=sel[0],
+b[15]=sel[0],
+out=bAndSel0);
+
+And16(a=bAndSel0, b[0]=notSel1, 
+b[1]=notSel1, 
+b[2]=notSel1,
+b[3]=notSel1,
+b[4]=notSel1,
+b[5]=notSel1,
+b[6]=notSel1,
+b[7]=notSel1,
+b[8]=notSel1,
+b[9]=notSel1,
+b[10]=notSel1,
+b[11]=notSel1,
+b[12]=notSel1,
+b[13]=notSel1,
+b[14]=notSel1,
+b[15]=notSel1,
+out=bAndSel0AndNotSel1);
+
+And16(a=c, b[0]=sel[1], 
+b[1]=sel[1], 
+b[2]=sel[1],
+b[3]=sel[1],
+b[4]=sel[1],
+b[5]=sel[1],
+b[6]=sel[1],
+b[7]=sel[1],
+b[8]=sel[1],
+b[9]=sel[1],
+b[10]=sel[1],
+b[11]=sel[1],
+b[12]=sel[1],
+b[13]=sel[1],
+b[14]=sel[1],
+b[15]=sel[1],
+out=cAndSel1);
+
+And16(a=cAndSel1, b[0]=notSel0, 
+b[1]=notSel0, 
+b[2]=notSel0,
+b[3]=notSel0,
+b[4]=notSel0,
+b[5]=notSel0,
+b[6]=notSel0,
+b[7]=notSel0,
+b[8]=notSel0,
+b[9]=notSel0,
+b[10]=notSel0,
+b[11]=notSel0,
+b[12]=notSel0,
+b[13]=notSel0,
+b[14]=notSel0,
+b[15]=notSel0,
+out=cAndSel1AndNotSel0);
+
+And16(a=d, b[0]=sel[1], 
+b[1]=sel[1], 
+b[2]=sel[1],
+b[3]=sel[1],
+b[4]=sel[1],
+b[5]=sel[1],
+b[6]=sel[1],
+b[7]=sel[1],
+b[8]=sel[1],
+b[9]=sel[1],
+b[10]=sel[1],
+b[11]=sel[1],
+b[12]=sel[1],
+b[13]=sel[1],
+b[14]=sel[1],
+b[15]=sel[1],
+out=dAndSel1);
+
+And16(a=dAndSel1, b[0]=sel[0], 
+b[1]=sel[0], 
+b[2]=sel[0],
+b[3]=sel[0],
+b[4]=sel[0],
+b[5]=sel[0],
+b[6]=sel[0],
+b[7]=sel[0],
+b[8]=sel[0],
+b[9]=sel[0],
+b[10]=sel[0],
+b[11]=sel[0],
+b[12]=sel[0],
+b[13]=sel[0],
+b[14]=sel[0],
+b[15]=sel[0],
+out=dAndSel1AndSel0);
+
+
+Or16(a=aAndNotSel0AndNotSel1, b=bAndSel0AndNotSel1, out=aOrb);
+Or16(a=cAndSel1AndNotSel0, b=dAndSel1AndSel0, out=cOrd);
+Or16(a=aOrb, b=cOrd, out=out);
+}

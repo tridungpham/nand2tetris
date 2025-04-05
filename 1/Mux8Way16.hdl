@@ -1,0 +1,65 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/1/Mux8Way16.hdl
+/**
+ * 8-way 16-bit multiplexor:
+ * out = a if sel = 000
+ *       b if sel = 001
+ *       c if sel = 010
+ *       d if sel = 011
+ *       e if sel = 100
+ *       f if sel = 101
+ *       g if sel = 110
+ *       h if sel = 111
+ */
+CHIP Mux8Way16 {
+    IN a[16], b[16], c[16], d[16],
+       e[16], f[16], g[16], h[16],
+       sel[3];
+    OUT out[16];
+
+    PARTS:
+    Not(in=sel[2], out=notSel2);
+    Mux4Way16(a=a, b=b, c=c, d=d, sel[0]=sel[0], sel[1]=sel[1], out=m4Wabcd);
+    And16(a=m4Wabcd, b[0]=notSel2, 
+        b[1]=notSel2, 
+        b[2]=notSel2,
+        b[3]=notSel2,
+        b[4]=notSel2,
+        b[5]=notSel2,
+        b[6]=notSel2,
+        b[7]=notSel2,
+        b[8]=notSel2,
+        b[9]=notSel2,
+        b[10]=notSel2,
+        b[11]=notSel2,
+        b[12]=notSel2,
+        b[13]=notSel2,
+        b[14]=notSel2,
+        b[15]=notSel2,
+        out=m4WabcdAndNotSel2
+        );
+
+    Mux4Way16(a=e, b=f, c=g, d=h, sel[0]=sel[0], sel[1]=sel[1], out=m4Wefgh);
+    And16(a=m4Wefgh, b[0]=sel[2], 
+        b[1]=sel[2], 
+        b[2]=sel[2],
+        b[3]=sel[2],
+        b[4]=sel[2],
+        b[5]=sel[2],
+        b[6]=sel[2],
+        b[7]=sel[2],
+        b[8]=sel[2],
+        b[9]=sel[2],
+        b[10]=sel[2],
+        b[11]=sel[2],
+        b[12]=sel[2],
+        b[13]=sel[2],
+        b[14]=sel[2],
+        b[15]=sel[2],
+        out=m4WefghAndSel2
+        );
+
+    Or16(a=m4WabcdAndNotSel2, b=m4WefghAndSel2, out=out);
+}
