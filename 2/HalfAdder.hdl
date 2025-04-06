@@ -12,4 +12,12 @@ CHIP HalfAdder {
 
     PARTS:
     //// Replace this comment with your code.
+    // truth table
+    // a b sum carry 
+    // 0 0 0   0
+    // 1 0 1   0
+    // 0 1 1   0
+    // 1 1 0   1
+    Xor(a=a, b=b, out=sum);
+    And(a=a, b=b, out=carry);
 }
