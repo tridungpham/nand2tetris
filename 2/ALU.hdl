@@ -41,5 +41,73 @@ CHIP ALU {
         ng;      // if (out < 0)  equals 1, else 0
 
     PARTS:
-    //// Replace this comment with your code.
+    // x zx xzout
+	// 1  0   1
+	// 0  0   0
+	// 1  1   0
+	// 0  1   0
+	Mux16(a=x, b=false, sel=zx, out=outZx);
+
+	// nx
+	// x nx nxout
+	// 1 0   1
+	// 0 0   0
+	// 1 1   0
+	// 0 1   1
+	Not16(in=outZx, out=notOutXz);
+	Mux16(a=outZx, b=notOutXz, sel=nx, out=outNx);
+
+
+	// zy
+	Mux16(a=y, b=false, sel=zy, out=outZy);
+	Not16(in=outZy, out=notOutZy);
+	Mux16(a=outZy, b=notOutZy, sel=ny, out=outNy);
+
+	// f and no
+	Add16(a=outNx, b=outNy, out=xAddy);
+	And16(a=outNx, b=outNy, out=xAndy);
+	Mux16(a=xAndy, b=xAddy, sel=f, out=outf);
+	Not16(in=outf, out=notOutf);
+
+
+	Mux16(a=outf, 
+		b=notOutf, 
+		sel=no, 
+		out=out, 
+		out[15]=ng,
+		out[14]=out14,
+		out[13]=out13,
+		out[12]=out12,
+		out[11]=out11,
+		out[10]=out10,
+		out[9]=out9,
+		out[8]=out8,
+		out[7]=out7,
+		out[6]=out6,
+		out[5]=out5,
+		out[4]=out4,
+		out[3]=out3,
+		out[2]=out2,
+		out[1]=out1,
+		out[0]=out0,
+		);
+
+	//
+
+	Or(a=out15, b=out14, out=orOut1514);
+	Or(a=orOut1514, b=out13, out=orOur1413);
+	Or(a=orOur1413, b=out12, out=orOut1312);
+	Or(a=orOut1312, b=out11, out=orOut1211);
+	Or(a=orOut1211, b=out10, out=orOut1110);
+	Or(a=out1110, b=out9, out=orOut109);
+	Or(a=orOut109, b=out8, out=orOut98);
+	Or(a=orOut98, b=out7, out=orOut87);
+	Or(a=orOut87, b=out6, out=orOut76);
+	Or(a=orOut76, b=out5, out=orOut65);
+	Or(a=orOut65, b=out4, out=orOut54);
+	Or(a=orOut54, b=out3, out=orOut43);
+	Or(a=orOut43, b=out2, out=orOut32);
+	Or(a=orOut32, b=out1, out=orOut21);
+	Or(a=orOut21, b=out0, out=orOut10);
+	Not(in=orOut10, out=zr);
 }
